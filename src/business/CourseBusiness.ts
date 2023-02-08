@@ -6,16 +6,13 @@ import { Course } from "../models/Course"
 import { CourseDB } from "../types"
 
 export class CourseBusiness {
-
     constructor(
-private courseDatabase : CourseDatabase,
-private courseDTO : CourseDTO
+        private courseDatabase: CourseDatabase
     ){}
-
     public getCourses = async (input: any) => {
         const { q } = input
 
-        // const courseDatabase = new CourseDatabase()
+        
         const coursesDB = await this.courseDatabase.findCourses(q)
 
         const courses: Course[] = coursesDB.map((courseDB) => new Course(
@@ -27,21 +24,10 @@ private courseDTO : CourseDTO
         return courses
     }
 
-    public createCourse = async (input: CreateCourseInputDTO) => {
+    public createCourse = async (input: any) => {
         const { id, name, lessons } = input
 
-        // if (typeof id !== "string") {
-        //     throw new BadRequestError("'id' deve ser string")
-        // }
-
-        // if (typeof name !== "string") {
-        //     throw new BadRequestError("'name' deve ser string")
-        // }
-
-        // if (typeof lessons !== "number") {
-        //     throw new BadRequestError("'lessons' deve ser number")
-        // }
-
+        
         if (name.length < 2) {
             throw new BadRequestError("'name' deve possuir pelo menos 2 caracteres")
         }
@@ -50,7 +36,7 @@ private courseDTO : CourseDTO
             throw new BadRequestError("'lessons' não pode ser zero ou negativo")
         }
 
-        // const courseDatabase = new CourseDatabase()
+        
         const courseDBExists = await this.courseDatabase.findCourseById(id)
 
         if (courseDBExists) {
@@ -71,12 +57,10 @@ private courseDTO : CourseDTO
 
         await this.courseDatabase.insertCourse(newCourseDB)
 
-        // const courseDTO = new CourseDTO()
-        const output = this.courseDTO.createCourseOutput(newCourse)
-        // const output = {
-        //     message: "Curso registrado com sucesso",
-        //     course: newCourse
-        // }
+        const output = {
+            message: "Curso registrado com sucesso",
+            course: newCourse
+        }
 
         return output
     }
@@ -115,7 +99,7 @@ private courseDTO : CourseDTO
             }
         }
 
-        // const courseDatabase = new CourseDatabase()
+        
         const courseToEditDB = await this.courseDatabase.findCourseById(idToEdit)
 
         if (!courseToEditDB) {
@@ -151,7 +135,7 @@ private courseDTO : CourseDTO
     public deleteCourse = async (input: any) => {
         const { idToDelete } = input
 
-        // const courseDatabase = new CourseDatabase()
+        
         const courseToDeleteDB = await this.courseDatabase.findCourseById(idToDelete)
 
         if (!courseToDeleteDB) {
