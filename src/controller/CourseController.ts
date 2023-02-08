@@ -4,12 +4,10 @@ import { CourseDTO } from "../dtos/CourseDTO"
 import { BaseError } from "../errors/BaseError"
 
 export class CourseController {
-
     constructor(
-private courseBusiness: CourseBusiness,
-private courseDTO: CourseDTO
+        private courseDTO: CourseDTO,
+        private courseBusiness: CourseBusiness
     ){}
-
     public getCourses = async (req: Request, res: Response) => {
         try {
             const input = {
@@ -39,14 +37,10 @@ private courseDTO: CourseDTO
             //     name: req.body.name,
             //     lessons: req.body.lessons
             // }
-
-            // const courseDTO = new CourseDTO()
-
             const input = this.courseDTO.createCourseInput(
                 req.body.id,
                 req.body.name,
                 req.body.lessons
-
             )
 
             // const courseBusiness = new CourseBusiness()
